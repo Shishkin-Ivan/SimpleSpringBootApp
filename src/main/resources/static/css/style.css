@@ -1,0 +1,76 @@
+/* Уменьшаем размер формы и отступы */
+.filter-form .form-label {
+    font-size: 0.9rem;
+}
+
+.filter-form .form-control {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+}
+
+.filter-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.filter-form .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+/* Располагаем фильтры в несколько колонок */
+.filter-form .row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.filter-form .col-md-4 {
+    flex: 0 0 30%;
+    max-width: 30%;
+}
+
+/* Для кнопки фильтра */
+.filter-form .btn-primary {
+    width: 100%;
+}
+
+.custom-filter-btn {
+    background-color: #4c6daf; /* Зеленый цвет */
+    color: white;
+}
+
+.custom-filter-btn:hover {
+    background-color: #455fa0; /* Тёмно-зеленый при наведении */
+}
+
+body {
+    background-color: #f8f9fa;
+}
+
+/* Улучшенный стиль навбара */
+.navbar {
+    transition: background 0.3s ease-in-out;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Делаем карточки стильнее */
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+h1 {
+    margin-top: 15px;
+    font-weight: 700;
+    color: #343a40;
+    letter-spacing: 1px;
+}

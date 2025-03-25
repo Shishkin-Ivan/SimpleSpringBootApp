@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body onload="showList(0)">
+
+<section data-bs-version="5.1" class="menu menu6 cid-uFj3Kr0xfY" once="menu" id="menu06-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="img/2022.png" alt="Logo" style="height: 4rem;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/attraction">Attraction</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/address">Address</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/service">Service</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ticket-info">Ticket Info</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</section>
+
+<div class="container mt-5 pt-5">
+    <h1 class="text-center mb-5">List of Address</h1>
+
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+        <div>
+            <label for="count_1" class="form-label">Items per page:</label>
+            <select name="count_1" id="count_1" class="form-select" onchange="showList(0)">
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+        <div id="paging_buttons" class="text-center">Pages:</div>
+    </div>
+
+    <div id="addresses_list">
+        <div class="row" id="address_card_container"></div>
+    </div>
+
+    <hr>
+
+    <div class="mb-4">
+        <h2 class="text-center mb-4">Filter Addresses</h2>
+        <form id="filter_form" class="filter-form">
+            <div class="row gx-3">
+                <div class="col-md-3 mb-3">
+                    <label for="filter_id" class="form-label">ID:</label>
+                    <input class="form-control" type="text" id="filter_id" name="id" maxlength="36" placeholder="ID">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="filter_city" class="form-label">City:</label>
+                    <input class="form-control" type="text" id="filter_city" name="city" maxlength="30" placeholder="City">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="filter_street" class="form-label">Street:</label>
+                    <input class="form-control" type="text" id="filter_street" name="street" maxlength="50" placeholder="Street">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="filter_building" class="form-label">Building:</label>
+                    <input class="form-control" type="text" id="filter_building" name="building" maxlength="10" placeholder="Building">
+                </div>
+            </div>
+            <div class="row gx-3">
+                <div class="col-md-3 mb-3">
+                    <label for="filter_region" class="form-label">Region:</label>
+                    <input class="form-control" type="text" id="filter_region" name="region" maxlength="30" placeholder="Region">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="filter_latitude" class="form-label">Latitude:</label>
+                    <input class="form-control" type="number" id="filter_latitude" name="latitude" step="any" placeholder="Latitude">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="filter_longitude" class="form-label">Longitude:</label>
+                    <input class="form-control" type="number" id="filter_longitude" name="longitude" step="any" placeholder="Longitude">
+                </div>
+            </div>
+            <div class="mb-3 d-flex justify-content-center gap-2">
+                <button type="button" class="btn btn-secondary d-flex align-items-center px-3 custom-filter-btn" onclick="showList(0)">
+                    <img src="/img/filter.png" alt="Filter" style="width: 16px; height: 16px; margin-right: 5px;"> Apply Filter
+                </button>
+                <button type="button" class="btn btn-secondary d-flex align-items-center px-3" onclick="clearFilters()">
+                    <img src="/img/reset.png" alt="Reset" style="width: 16px; height: 16px; margin-right: 5px;"> Reset Filters
+                </button>
+            </div>
+
+            <script>
+                function clearFilters() {
+                    $("#filter_form").trigger("reset");
+                    showList(0);
+                }
+            </script>
+        </form>
+    </div>
+
+    <hr>
+
+    <h2>Create a New Address</h2>
+    <form id="create_address_form">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="input_city_new" class="form-label">City:</label>
+                <input class="form-control" type="text" id="input_city_new" name="city" required maxlength="30" placeholder="City">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="input_street_new" class="form-label">Street:</label>
+                <input class="form-control" type="text" id="input_street_new" name="street" required maxlength="50" placeholder="Street">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="input_building_new" class="form-label">Building:</label>
+                <input class="form-control" type="text" id="input_building_new" name="building" required
+                       maxlength="10" placeholder="Building">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="input_region_new" class="form-label">Region:</label>
+                <input class="form-control" type="text" id="input_region_new" name="region" required maxlength="30" placeholder="Region">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="input_latitude_new" class="form-label">Latitude:</label>
+                <input class="form-control" type="number" id="input_latitude_new" name="latitude" step="any" required placeholder="Latitude">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="input_longitude_new" class="form-label">Longitude:</label>
+                <input class="form-control" type="number" id="input_longitude_new" name="longitude" step="any" required placeholder="Longitude">
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-success" onclick="createAddress(event);" style="margin-bottom: 20px;">
+                <img src="/img/save.png" alt="Save" style="width: 20px;"> Create Address
+            </button>
+        </div>
+    </form>
+</div>
+
+
+
+<script>
+
+    let currentPage = 0;
+
+    function showList(page_number) {
+        currentPage = page_number;
+
+        let url = "/api/address?";
+        let countPerPage = $("#count_1").val();
+        url = url.concat("pageSize=").concat(countPerPage);
+        url = url.concat("&pageNumber=").concat(page_number);
+
+
+        let filter_id = $("#filter_id").val();
+        let filter_city = $("#filter_city").val();
+        let filter_street = $("#filter_street").val();
+        let filter_building = $("#filter_building").val();
+        let filter_region = $("#filter_region").val();
+        let filter_latitude = $("#filter_latitude").val();
+        let filter_longitude = $("#filter_longitude").val();
+
+        if (filter_id) url += "&id=" + encodeURIComponent(filter_id);
+        if (filter_city) url += "&city=" + encodeURIComponent(filter_city);
+        if (filter_street) url += "&street=" + encodeURIComponent(filter_street);
+        if (filter_building) url += "&building=" + encodeURIComponent(filter_building);
+        if (filter_region) url += "&region=" + encodeURIComponent(filter_region);
+        if (filter_latitude) url += "&latitude=" + encodeURIComponent(filter_latitude);
+        if (filter_longitude) url += "&longitude=" + encodeURIComponent(filter_longitude);
+
+        $.get(url, function (response) {
+            $('#address_card_container').empty();
+
+            $.each(response, function (i, item) {
+                let addressCard = `
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">${item.city}, ${item.street}, ${item.building}</h5>
+                        <p class="card-text">
+                            <strong>Region:</strong> ${item.region}<br>
+                            <strong>Latitude:</strong> ${item.latitude}<br>
+                            <strong>Longitude:</strong> ${item.longitude}
+                        </p>
+                        <button class="btn btn-warning" onclick="editAddress('${item.id}')">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteAddress('${item.id}')">Delete</button>
+                    </div>
+                </div>
+            </div>`;
+                $('#address_card_container').append(addressCard);
+            });
+
+            getTotalCount().then(totalCount => {
+                let pagesCount = Math.ceil(totalCount / countPerPage);
+                updatePagination(pagesCount, page_number);
+            });
+        });
+    }
+
+    function updatePagination(pagesCount, currentPage) {
+        $('#paging_buttons').empty();
+
+        if (currentPage >= pagesCount) {
+            currentPage = pagesCount - 1;
+        }
+
+        for (let i = 0; i < pagesCount; i++) {
+            let button = $("<button></button>")
+                .addClass("btn m-1")
+                .addClass(i === currentPage ? "btn-primary" : "btn-light")
+                .text(i + 1)
+                .click(() => showList(i));
+
+            $('#paging_buttons').append(button);
+        }
+    }
+
+    function getTotalCount() {
+        return $.get("/api/address/count").then((result) => parseInt(result));
+    }
+
+    function createAddress(event) {
+        event.preventDefault();
+
+        let city = $("#input_city_new").val().trim();
+        let street = $("#input_street_new").val().trim();
+        let building = $("#input_building_new").val();
+        let region = $("#input_region_new").val().trim();
+        let latitude = $("#input_latitude_new").val().trim();
+        let longitude = $("#input_longitude_new").val();
+
+        if (!city || !street || !building || !region || !latitude || !longitude) {
+            alert("Please fill in all required fields!");
+            return;
+        }
+
+        let formData = {
+            city: $("#input_city_new").val(),
+            street: $("#input_street_new").val(),
+            building: $("#input_building_new").val(),
+            region: $("#input_region_new").val(),
+            latitude: $("#input_latitude_new").val(),
+            longitude: $("#input_longitude_new").val()
+        };
+
+        $.ajax({
+            url: "/api/address",
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function () {
+                showList(0);
+            }
+        });
+    }
+
+    function deleteAddress(id) {
+        let url = "/api/address/" + id;
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            success: function () {
+                showList(currentPage);
+            }
+        });
+    }
+
+    function editAddress(id) {
+        $.get(`/api/address/${id}`, function (address) {
+            let formHtml = `
+            <h2>Edit Address</h2>
+            <form id="edit_address_form">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="input_city_edit" class="form-label">City:</label>
+                        <input class="form-control" type="text" id="input_city_edit" name="city" value="${address.city}" required maxlength="30">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="input_street_edit" class="form-label">Street:</label>
+                        <input class="form-control" type="text" id="input_street_edit" name="street" value="${address.street}" required maxlength="50">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="input_building_edit" class="form-label">Building:</label>
+                        <input class="form-control" type="text" id="input_building_edit" name="building" value="${address.building}" required maxlength="10">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="input_region_edit" class="form-label">Region:</label>
+                        <input class="form-control" type="text" id="input_region_edit" name="region" value="${address.region}" required maxlength="30">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="input_latitude_edit" class="form-label">Latitude:</label>
+                        <input class="form-control" type="number" id="input_latitude_edit" name="latitude" value="${address.latitude}" step="any" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="input_longitude_edit" class="form-label">Longitude:</label>
+                        <input class="form-control" type="number" id="input_longitude_edit" name="longitude" value="${address.longitude}" step="any" required>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success" style="margin-bottom: 20px;">Save Changes</button>
+                </div>
+            </form>
+        `;
+
+            $("#address_card_container").html(formHtml);
+
+            $("#edit_address_form").submit(function (event) {
+                event.preventDefault();
+
+                let updatedData = {
+                    city: $("#input_city_edit").val(),
+                    street: $("#input_street_edit").val(),
+                    building: $("#input_building_edit").val(),
+                    region: $("#input_region_edit").val(),
+                    latitude: $("#input_latitude_edit").val(),
+                    longitude: $("#input_longitude_edit").val()
+                };
+
+                $.ajax({
+                    url: `/api/address/${id}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(updatedData),
+                    success: function () {
+                        showList(currentPage);
+                    }
+                });
+            });
+        });
+    }
+
+</script>
+
+</body>
+</html>
