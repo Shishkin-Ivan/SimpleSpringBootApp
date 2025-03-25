@@ -7,5 +7,5 @@ import lombok.Builder;
 public record ServiceRequestDTO(
         String name,
         String description,
-        ServiceType serviceType
+        ServiceType type
 ) {}
