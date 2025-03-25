@@ -29,18 +29,18 @@ public class Attraction {
     @Enumerated(EnumType.STRING)
     private AttractionType type;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "attraction_service",
             joinColumns = @JoinColumn(name = "attraction_id"),
             inverseJoinColumns = @JoinColumn(name = "service_id"))
     private Set<Service> services;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ticket_info_id", referencedColumnName = "ticket_info_id", unique = true)
     private TicketInfo ticketInfo;
 }
