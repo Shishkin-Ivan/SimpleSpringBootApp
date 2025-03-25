@@ -7,4 +7,7 @@ public enum AttractionType {
     PALACE,
     PARK,
     RESERVE,
+    CULTURAL,
+    ENTERTAINMENT,
+    GOVERNMENT
 }
