@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Info</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body onload="showList(0)">
+
+<section data-bs-version="5.1" class="menu menu6 cid-uFj3Kr0xfY" once="menu" id="menu06-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="img/2022.png" alt="Logo" style="height: 4rem;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/attraction">Attraction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/address">Address</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/service">Service</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/ticket-info">Ticket Info</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</section>
+
+<div class="container mt-5 pt-5">
+    <h1 class="text-center mb-5">List of Tickets Info</h1>
+
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+        <div>
+            <label for="count_1" class="form-label">Items per page:</label>
+            <select name="count_1" id="count_1" class="form-select" onchange="showList(0)">
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+        <div id="paging_buttons" class="text-center">Pages:</div>
+    </div>
+
+    <div id="tickets_info_list">
+        <div class="row" id="ticket_info_card_container"></div>
+    </div>
+
+    <hr>
+
+    <div class="mb-4">
+        <h2 class="text-center mb-4">Filter Tickets Info</h2>
+        <form id="filter_form" class="filter-form">
+            <div class="row gx-3">
+                <div class="col-md-3 mb-3">
+                    <label for="filter_id" class="form-label">ID:</label>
+                    <input class="form-control" type="text" id="filter_id" name="id" maxlength="36" placeholder="ID">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="filter_price" class="form-label">Price:</label>
+                    <input class="form-control" type="number" id="filter_price" name="price" step="any" placeholder="Price">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="filter_currency" class="form-label">Currency:</label>
+                    <input class="form-control" type="text" id="filter_currency" name="currency" maxlength="30" placeholder="Currency">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="filter_availability" class="form-label">Availability:</label>
+                    <select class="form-select" id="filter_availability" name="availability">
+                        <option value="">Any</option>
+                        <option value="true">Available</option>
+                        <option value="false">Not Available</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 d-flex justify-content-center gap-2">
+                <button type="button" class="btn btn-secondary d-flex align-items-center px-3 custom-filter-btn" onclick="showList(0)">
+                    <img src="/img/filter.png" alt="Filter" style="width: 16px; height: 16px; margin-right: 5px;"> Apply Filter
+                </button>
+                <button type="button" class="btn btn-secondary d-flex align-items-center px-3" onclick="clearFilters()">
+                    <img src="/img/reset.png" alt="Reset" style="width: 16px; height: 16px; margin-right: 5px;"> Reset Filters
+                </button>
+            </div>
+
+            <script>
+                function clearFilters() {
+                    $("#filter_form").trigger("reset");
+                    showList(0);
+                }
+            </script>
+        </form>
+    </div>
+
+    <hr>
+
+    <h2>Create a New Ticket Info</h2>
+    <form id="create_ticket_info_form">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="input_price_new" class="form-label">Price:</label>
+                <input class="form-control" type="number" id="input_price_new" name="price" step="any" required placeholder="Price">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="input_currency_new" class="form-label">Currency:</label>
+                <input class="form-control" type="text" id="input_currency_new" name="currency" required maxlength="30" placeholder="Currency">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="input_availability_new" class="form-label">Availability:</label>
+                <select class="form-select" id="input_availability_new" name="availability" required>
+                    <option value="true">Available</option>
+                    <option value="false">Not Available</option>
+                </select>
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-success" onclick="createTicketInfo(event);" style="margin-bottom: 20px;">
+                <img src="/img/save.png" alt="Save" style="width: 20px;"> Create Ticket Info
+            </button>
+        </div>
+    </form>
+</div>
+
+
+
+<script>
+    let currentPage = 0;
+
+    function showList(page_number) {
+        currentPage = page_number;
+
+        let url = "/api/ticket-info?";
+        let countPerPage = $("#count_1").val();
+        url = url.concat("pageSize=").concat(countPerPage);
+        url = url.concat("&pageNumber=").concat(page_number);
+
+        // Добавляем фильтры, если они не пустые
+        let filter_id = $("#filter_id").val();
+        let filter_price = $("#filter_price").val();
+        let filter_currency = $("#filter_currency").val();
+        let filter_availability = $("#filter_availability").val();
+
+        if (filter_id && isValidUUID(filter_id)) {
+            url += "&id=" + encodeURIComponent(filter_id);
+        } else if (filter_id) {
+            alert('Invalid ID format');
+            return;
+        }
+
+        if (filter_price) url += "&price=" + encodeURIComponent(filter_price);
+        if (filter_currency) url += "&currency=" + encodeURIComponent(filter_currency);
+        if (filter_availability !== "") url += "&availability=" + encodeURIComponent(filter_availability);
+
+        $.get(url, function (response) {
+            $('#ticket_info_card_container').empty();
+
+            $.each(response, function (i, item) {
+                let ticketInfoCard = `
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">${item.price}, ${item.currency}</h5>
+                            <p class="card-text">
+                                <strong>Availability:</strong> ${item.availability}<br>
+                            </p>
+                            <button class="btn btn-warning" onclick="editTicketInfo('${item.id}')">Edit</button>
+                            <button class="btn btn-danger" onclick="deleteTicketInfo('${item.id}')">Delete</button>
+                        </div>
+                    </div>
+                </div>`;
+                $('#ticket_info_card_container').append(ticketInfoCard);
+            });
+
+            getTotalCount().then(totalCount => {
+                let pagesCount = Math.ceil(totalCount / countPerPage);
+                updatePagination(pagesCount, page_number);
+            });
+        }).fail(function () {
+            alert('Error fetching ticket info');
+        });
+    }
+
+    function isValidUUID(uuid) {
+        const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        return regex.test(uuid);
+    }
+
+    function updatePagination(pagesCount, currentPage) {
+        $('#paging_buttons').empty();
+
+        if (currentPage >= pagesCount) {
+            currentPage = pagesCount - 1;
+        }
+
+        for (let i = 0; i < pagesCount; i++) {
+            let button = $("<button></button>")
+                .addClass("btn m-1")
+                .addClass(i === currentPage ? "btn-primary" : "btn-light")
+                .text(i + 1)
+                .click(() => showList(i));
+
+            $('#paging_buttons').append(button);
+        }
+    }
+
+    function getTotalCount() {
+        return $.get("/api/ticket-info/count").then((result) => parseInt(result));
+    }
+
+    function createTicketInfo(event) {
+        event.preventDefault();
+
+        let price = $("#input_price_new").val().trim();
+        let currency = $("#input_currency_new").val().trim();
+        let availability = $("#input_availability_new").val();
+
+        if (!price || !currency || !availability) {
+            alert("Please fill in all required fields!");
+            return;
+        }
+
+        let formData = {
+            price: $("#input_price_new").val(),
+            currency: $("#input_currency_new").val(),
+            availability: $("#input_availability_new").val() === "true"
+        };
+
+        $.ajax({
+            url: "/api/ticket-info",
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function () {
+                showList(0);
+            }
+        });
+    }
+
+    function deleteTicketInfo(id) {
+        if (!id || !isValidUUID(id)) {
+            console.error("Invalid UUID format:", id);
+            return;
+        }
+
+        let url = `/api/ticket-info/${id}`;
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            success: function () {
+                showList(currentPage);
+            },
+            error: function(err) {
+                console.error("Error deleting ticket:", err);
+            }
+        });
+    }
+
+    function editTicketInfo(id) {
+        $.get(`/api/ticket-info/${id}`, function (ticket_info) {
+            let formHtml = `
+            <h2>Edit Ticket Info</h2>
+            <form id="edit_ticket_info_form">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="input_price_edit" class="form-label">Price:</label>
+                        <input class="form-control" type="number" id="input_price_edit" name="price" value="${ticket_info.price}" step="any" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="input_currency_edit" class="form-label">Currency:</label>
+                        <input class="form-control" type="text" id="input_currency_edit" name="currency" value="${ticket_info.currency}" required maxlength="30">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="input_availability_edit" class="form-label">Availability:</label>
+                        <input class="form-control" type="text" id="input_availability_edit" name="availability" value="${ticket_info.availability}" required maxlength="30">
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success" style="margin-bottom: 20px;">Save Changes</button>
+                </div>
+            </form>
+        `;
+
+            $("#ticket_info_card_container").html(formHtml);
+
+            $("#edit_ticket_info_form").submit(function (event) {
+                event.preventDefault();
+
+                let updatedData = {
+                    price: $("#input_price_edit").val(),
+                    currency: $("#input_currency_edit").val(),
+                    availability: $("#input_availability_edit").val(),
+                };
+
+                $.ajax({
+                    url: `/api/ticket-info/${id}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(updatedData),
+                    success: function () {
+                        showList(currentPage);
+                    }
+                });
+            });
+        });
+    }
+
+</script>
+
+</body>
+</html>
