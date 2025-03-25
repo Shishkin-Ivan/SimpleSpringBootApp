@@ -7,5 +7,7 @@ public record AddressRequestDTO(
         Integer building,
         String street,
         String city,
-        String region
+        String region,
+        Double latitude,
+        Double longitude
 ) {}
