@@ -183,3 +183,10 @@ databaseChangeLog:
             referencedColumnNames: service_id
             onDelete: CASCADE
             onUpdate: CASCADE
+  - changeSet:
+      id: 6
+      author: ivan_shishkin
+      changes:
+        - sqlFile:
+            path: data/init.sql
+            relativeToChangelogFile: true
