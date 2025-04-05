@@ -10,8 +10,8 @@ public interface AddressService {
 
     AddressResponseDTO getAddressById(UUID id);
 
-    List<AddressResponseDTO> findAll(int pageNumber, int pageSize, UUID id, String city, String street, Integer building,
-                                     String region, Double latitude, Double longitude);
+    List<AddressResponseDTO> getAllAddresses(int pageNumber, int pageSize, UUID id, String city, String street, Integer building,
+                                             String region, Double latitude, Double longitude);
 
     long getAddressesCount();
 

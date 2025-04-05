@@ -25,25 +25,20 @@ public class AddressServiceImpl implements AddressService {
     private final AddressMapper addressMapper;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public AddressResponseDTO getAddressById(UUID id) {
         log.debug("Find address by id: {}", id);
 
-        Optional<Address> optionalAddress = addressRepository.findById(id);
-        if (optionalAddress.isPresent()) {
-            Address address = optionalAddress.get();
-            return addressMapper.mapToAddressResponseDTO(address);
-        }
-        log.debug("No address found with id: {}", id);
-        return null;
+        Address address = addressRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Address with id " + id + " not found"));
+
+        return addressMapper.mapToAddressResponseDTO(address);
     }
 
-
     @Override
-    public List<AddressResponseDTO> findAll(int pageNumber, int pageSize, UUID id, String city, String street, Integer building, String region, Double latitude, Double longitude) {
+    public List<AddressResponseDTO> getAllAddresses(int pageNumber, int pageSize, UUID id, String city, String street, Integer building, String region, Double latitude, Double longitude) {
         log.debug("Find all addresses with filters");
 
-        // Получаем список адресов с фильтрами
         List<Address> addresses = addressRepository.findByFilters(id, city, street, building, region, latitude, longitude);
 
         return addresses.stream().skip(pageNumber * pageSize).limit(pageSize)
@@ -51,14 +46,12 @@ public class AddressServiceImpl implements AddressService {
                 .collect(Collectors.toList());
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public long getAddressesCount() {
         log.debug("Counting all addresses");
         return addressRepository.count();
     }
-
 
     @Override
     @Transactional
@@ -105,10 +98,13 @@ public class AddressServiceImpl implements AddressService {
         throw new EntityNotFoundException("Address with id " + id + " not found");
     }
 
-
     @Override
     @Transactional
     public void deleteAddress(UUID id) {
+        if (!addressRepository.existsById(id)) {
+            throw new EntityNotFoundException("Address with id " + id + " not found");
+        }
         addressRepository.deleteById(id);
     }
+
 }
