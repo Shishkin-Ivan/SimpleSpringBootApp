@@ -3,26 +3,21 @@ package com.aston.intensive.simplespringbootapp.service;
 import com.aston.intensive.simplespringbootapp.dto.AttractionRequestDTO;
 import com.aston.intensive.simplespringbootapp.dto.AttractionResponseDTO;
 import com.aston.intensive.simplespringbootapp.mapper.AttractionMapper;
-import com.aston.intensive.simplespringbootapp.model.Address;
-import com.aston.intensive.simplespringbootapp.model.Attraction;
-import com.aston.intensive.simplespringbootapp.model.AttractionType;
-import com.aston.intensive.simplespringbootapp.model.TicketInfo;
+import com.aston.intensive.simplespringbootapp.model.*;
 import com.aston.intensive.simplespringbootapp.repository.AddressRepository;
 import com.aston.intensive.simplespringbootapp.repository.AttractionRepository;
+import com.aston.intensive.simplespringbootapp.repository.ServiceRepository;
 import com.aston.intensive.simplespringbootapp.repository.TicketInfoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Service
+@org.springframework.stereotype.Service
 @RequiredArgsConstructor
 public class AttractionServiceImpl implements AttractionService {
 
@@ -30,18 +25,16 @@ public class AttractionServiceImpl implements AttractionService {
     private final AttractionMapper attractionMapper;
     private final AddressRepository addressRepository;
     private final TicketInfoRepository ticketInfoRepository;
+    private final ServiceRepository serviceRepository;
 
     @Override
     public AttractionResponseDTO getAttractionById(UUID id) {
         log.debug("Find attraction by id: {}", id);
 
-        Optional<Attraction> optionalAttraction = attractionRepository.findById(id);
-        if (optionalAttraction.isPresent()) {
-            Attraction attraction = optionalAttraction.get();
-            return attractionMapper.mapToAttractionResponseDTO(attraction);
-        }
-        log.debug("No attraction found with id: {}", id);
-        return null;
+        Attraction attraction = attractionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Attraction with id " + id + " not found"));
+
+        return attractionMapper.mapToAttractionResponseDTO(attraction);
     }
 
     @Override
@@ -49,6 +42,7 @@ public class AttractionServiceImpl implements AttractionService {
         log.debug("Find all attractions with filters");
 
         List<Attraction> attractions = attractionRepository.findByFilters(id, name, description, type);
+
         return attractions.stream().skip(pageNumber * pageSize).limit(pageSize)
                 .map(attractionMapper::mapToAttractionResponseDTO)
                 .collect(Collectors.toList());
@@ -57,6 +51,7 @@ public class AttractionServiceImpl implements AttractionService {
     @Override
     @Transactional
     public long getAttractionCount() {
+        log.debug("Counting all attractions");
         return attractionRepository.count();
     }
 
@@ -79,8 +74,19 @@ public class AttractionServiceImpl implements AttractionService {
                     .orElseThrow(() -> new EntityNotFoundException("Ticket Info with id " + attractionRequestDTO.ticketInfoId() + " not found"));
             attraction.setTicketInfo(ticketInfo);
         }
+        if (attractionRequestDTO.serviceIds() != null && !attractionRequestDTO.serviceIds().isEmpty()) {
+            Set<Service> services = new HashSet<>();
+            List<String> serviceIds = attractionRequestDTO.serviceIds();
+            for (String serviceId : serviceIds) {
+                Service service = serviceRepository.findById(UUID.fromString(serviceId))
+                        .orElseThrow(() -> new EntityNotFoundException("Service with id " + serviceId + " not found"));
 
-
+                services.add(service);
+            }
+            if (!services.isEmpty()) {
+                attraction.setServices(services);
+            }
+        }
         attractionRepository.save(attraction);
         return attractionMapper.mapToAttractionResponseDTO(attraction);
     }
@@ -92,13 +98,13 @@ public class AttractionServiceImpl implements AttractionService {
         if (optionalAttraction.isPresent()) {
             Attraction attraction = optionalAttraction.get();
             Attraction updatedAttraction = attractionMapper.mapToAttraction(attractionRequestDTO);
-            if(!updatedAttraction.getName().isBlank()) {
+            if (!updatedAttraction.getName().isBlank()) {
                 attraction.setName(updatedAttraction.getName());
             }
-            if(!updatedAttraction.getDescription().isBlank()) {
+            if (!updatedAttraction.getDescription().isBlank()) {
                 attraction.setDescription(updatedAttraction.getDescription());
             }
-            if(updatedAttraction.getType() != null) {
+            if (updatedAttraction.getType() != null) {
                 attraction.setType(updatedAttraction.getType());
             }
 
@@ -114,6 +120,21 @@ public class AttractionServiceImpl implements AttractionService {
                 attraction.setTicketInfo(ticketInfo);
             }
 
+            if (attractionRequestDTO.serviceIds() != null && !attractionRequestDTO.serviceIds().isEmpty()) {
+                Set<Service> services = new HashSet<>();
+                List<String> serviceIds = attractionRequestDTO.serviceIds();
+                for (String serviceId : serviceIds) {
+                    if (serviceRepository.findById(UUID.fromString(serviceId)).isPresent()) {
+                        Service service = serviceRepository.findById(UUID.fromString(serviceId))
+                                .orElseThrow(() -> new EntityNotFoundException("Service with id " + serviceId + " not found"));
+                        services.add(service);
+                    }
+                }
+                if (!services.isEmpty()) {
+                    attraction.setServices(services);
+                }
+            }
+
             attractionRepository.save(attraction);
             return attractionMapper.mapToAttractionResponseDTO(attraction);
         }
@@ -123,9 +144,10 @@ public class AttractionServiceImpl implements AttractionService {
     @Override
     @Transactional
     public void deleteAttraction(UUID id) {
-        if(!attractionRepository.existsById(id)) {
+        if (!attractionRepository.existsById(id)) {
             throw new EntityNotFoundException("Attraction with id " + id + " not found");
         }
         attractionRepository.deleteById(id);
     }
+
 }
