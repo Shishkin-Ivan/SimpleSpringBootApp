@@ -21,5 +21,4 @@ public interface FrontController {
     @GetMapping("/ticket-info")
     String ticketInfoPage();
 
-
 }
