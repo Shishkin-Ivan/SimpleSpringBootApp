@@ -28,18 +28,15 @@ public class TicketInfoServiceImpl implements TicketInfoService {
     public TicketInfoResponseDTO getTicketInfoById(UUID id) {
         log.debug("Find ticket info by id: {}", id);
 
-        Optional<TicketInfo> optionalTicketInfo = ticketInfoRepository.findById(id);
-        if (optionalTicketInfo.isPresent()) {
-            TicketInfo ticketInfo = optionalTicketInfo.get();
-            return ticketInfoMapper.mapToTicketInfoResponseDTO(ticketInfo);
-        }
-        log.debug("No ticket info found with id: {}", id);
-        return null;
+        TicketInfo ticketInfo = ticketInfoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Ticket info with id " + id + " not found"));
+
+        return ticketInfoMapper.mapToTicketInfoResponseDTO(ticketInfo);
     }
 
     @Override
     public List<TicketInfoResponseDTO> getAllTicketsInfo(int pageNumber, int pageSize, UUID id, Double price, String currency, Boolean availability) {
-        log.debug("Find all tickets-info with filters");
+        log.debug("Find all tickets info with filters");
 
         List<TicketInfo> ticketsInfo = ticketInfoRepository.findByFilters(id, price, currency, availability);
 
@@ -51,7 +48,7 @@ public class TicketInfoServiceImpl implements TicketInfoService {
     @Override
     @Transactional
     public long getTicketsInfoCount() {
-        log.debug("Counting all tickets-info");
+        log.debug("Counting all tickets info");
         return ticketInfoRepository.count();
     }
 
@@ -83,12 +80,15 @@ public class TicketInfoServiceImpl implements TicketInfoService {
             ticketInfoRepository.save(ticketInfo);
             return ticketInfoMapper.mapToTicketInfoResponseDTO(updateTicketInfo);
         }
-        throw new EntityNotFoundException("Ticket-info with id " + id + " not found");
+        throw new EntityNotFoundException("Ticket info with id " + id + " not found");
     }
 
     @Override
     @Transactional
     public void deleteTicketInfo(UUID id) {
+        if (!ticketInfoRepository.existsById(id)) {
+            throw new EntityNotFoundException("Ticket info with id " + id + " not found");
+        }
         ticketInfoRepository.deleteById(id);
     }
 }

@@ -25,16 +25,14 @@ public class ServiceServiceImpl implements ServiceService {
     private final ServiceMapper serviceMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public ServiceResponseDTO getServiceById(UUID id) {
         log.debug("Find service by id: {}", id);
 
-        Optional<Service> optionalService = serviceRepository.findById(id);
-        if (optionalService.isPresent()) {
-            Service service = optionalService.get();
-            return serviceMapper.mapToServiceResponseDTO(service);
-        }
-        log.debug("No service found with id: {}", id);
-        return null;
+        Service service = serviceRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Service with id " + id + " not found"));
+
+        return serviceMapper.mapToServiceResponseDTO(service);
     }
 
     @Override
@@ -96,4 +94,5 @@ public class ServiceServiceImpl implements ServiceService {
         }
         serviceRepository.deleteById(id);
     }
+
 }

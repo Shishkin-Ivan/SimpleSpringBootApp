@@ -21,8 +21,7 @@ public class ServiceMapper {
                 .id(service.getId())
                 .name(service.getName())
                 .description(service.getDescription())
-                .type(service.getType() != null ?
-                        service.getType().name().substring(0, 1).toUpperCase() + service.getType().name().substring(1).toLowerCase() : null)
+                .type(service.getType())
                 .build();
     }
 }
