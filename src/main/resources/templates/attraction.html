@@ -154,6 +154,16 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="checkbox_services" class="form-label">Service:</label>
+                <div id="checkbox_services" class="form-check d-flex flex-wrap gap-3"></div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <a href="/service"><button type="button" class="btn btn-outline-primary mt-4">Add New Service</button></a>
+            </div>
+        </div>
+
         <div class="text-center">
             <button type="submit" class="btn btn-success" onclick="createAttraction(event);" style="margin-bottom: 20px;">
                 <img src="/img/save.png" alt="Save" style="width: 20px;"> Create Attraction
@@ -246,6 +256,10 @@
         let type = $("#input_type_new").val();
         let address = $("#select_address").val();
         let ticketInfo = $("#select_ticket_info").val();
+        let serviceIds = [];
+        $('input[name="service"]:checked').each(function () {
+            serviceIds.push($(this).val());
+        });
 
         if (!name || !description || !type || !address || !ticketInfo) {
             alert("Please fill in all required fields!");
@@ -258,10 +272,12 @@
             type: $("#input_type_new").val(),
             addressId:$("#select_address").val(),
             ticketInfoId: $("#select_ticket_info").val(),
+            serviceIds: serviceIds
         };
 
         console.log("Selected Address ID: ", address);
         console.log("Selected Ticket Info ID: ", ticketInfo);
+        console.log("Selected Service ID: ", serviceIds);
 
         $.ajax({
             url: "/api/attraction",
@@ -355,9 +371,26 @@
         });
     }
 
+    function loadService() {
+        $.get("/api/service", function (services) {
+            let checkboxContainer = $('#checkbox_services');
+            checkboxContainer.empty();
+
+            $.each(services, function (i, service) {
+                let checkboxHtml = `
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="${service.id}" id="service_${service.id}" name="service">
+                    <label class="form-check-label" for="service_${service.id}">${service.name}</label>
+                </div>`;
+                checkboxContainer.append(checkboxHtml);
+            });
+        });
+    }
+
     $(document).ready(function () {
         loadAddresses();
-        loadTicketsInfo()
+        loadTicketsInfo();
+        loadService()
     });
 
 </script>
