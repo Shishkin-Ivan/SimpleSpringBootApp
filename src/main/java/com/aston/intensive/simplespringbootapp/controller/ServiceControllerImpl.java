@@ -24,7 +24,7 @@ public class ServiceControllerImpl implements ServiceController {
     @Override
     public List<ServiceResponseDTO> getAllServices(
             @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "3") int pageSize,
+            @RequestParam(defaultValue = "2147483647") int pageSize,
             @RequestParam(required = false) UUID id,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String description,
