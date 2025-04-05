@@ -1,0 +1,185 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.changelog-master-test.yaml
+  - changeSet:
+      id: 1
+      author: ivan_shishkin
+      changes:
+        - createTable:
+            tableName: address
+            columns:
+              - column:
+                  name: address_id
+                  type: UUID
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: building
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: street
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: city
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: region
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: latitude
+                  type: double
+                  constraints:
+                    nullable: true
+              - column:
+                  name: longitude
+                  type: double
+                  constraints:
+                    nullable: true
+  - changeSet:
+      id: 2
+      author: ivan_shishkin
+      changes:
+        - createTable:
+            tableName: attractions
+            columns:
+              - column:
+                  name: attraction_id
+                  type: UUID
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_attraction_address
+                    references: address(address_id)
+                    onDelete: CASCADE
+                    onUpdate: CASCADE
+              - column:
+                  name: ticket_info_id
+                  type: UUID
+                  constraints:
+                    unique: true
+                    nullable: true
+  - changeSet:
+      id: 3
+      author: ivan_shishkin
+      changes:
+        - createTable:
+            tableName: tickets_info
+            columns:
+              - column:
+                  name: ticket_info_id
+                  type: UUID
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: price
+                  type: double
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: availability
+                  type: boolean
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 4
+      author: ivan_shishkin
+      changes:
+        - createTable:
+            tableName: services
+            columns:
+              - column:
+                  name: service_id
+                  type: UUID
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 5
+      author: ivan_shishkin
+      changes:
+        - createTable:
+            tableName: attraction_service
+            columns:
+              - column:
+                  name: attraction_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: service_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            tableName: attraction_service
+            columnNames: attraction_id, service_id
+            constraintName: pk_attraction_service
+        - addForeignKeyConstraint:
+            baseTableName: attraction_service
+            baseColumnNames: attraction_id
+            constraintName: fk_as_attraction
+            referencedTableName: attractions
+            referencedColumnNames: attraction_id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: attraction_service
+            baseColumnNames: service_id
+            constraintName: fk_as_service
+            referencedTableName: services
+            referencedColumnNames: service_id
+            onDelete: CASCADE
+            onUpdate: CASCADE
