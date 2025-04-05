@@ -37,7 +37,7 @@ public class AttractionMapper {
 
         List<String> serviceNames = new ArrayList<>();
 
-        if(!attraction.getServices().isEmpty()) {
+        if(attraction.getServices() != null && !attraction.getServices().isEmpty()) {
             serviceNames = attraction.getServices().stream().map(s -> s.getName()).collect(Collectors.toList());
         }
 
