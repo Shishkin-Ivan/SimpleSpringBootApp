@@ -3,6 +3,7 @@ package com.aston.intensive.simplespringbootapp.dto;
 import com.aston.intensive.simplespringbootapp.model.AttractionType;
 import lombok.Builder;
 
+import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -12,5 +13,6 @@ public record AttractionRequestDTO(
         String description,
         AttractionType type,
         String addressId,
-        String ticketInfoId
+        String ticketInfoId,
+        List<String> serviceIds
 ) {}
