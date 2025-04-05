@@ -32,7 +32,7 @@ public class AddressControllerImpl implements AddressController {
             @RequestParam(required = false) Double latitude,
             @RequestParam(required = false) Double longitude) {
 
-        return addressService.findAll(pageNumber, pageSize, id, city, street, building, region, latitude, longitude);
+        return addressService.getAllAddresses(pageNumber, pageSize, id, city, street, building, region, latitude, longitude);
     }
 
     @Override
