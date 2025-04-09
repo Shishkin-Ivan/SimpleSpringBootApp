@@ -5,6 +5,11 @@ import lombok.Builder;
 
 import java.util.UUID;
 
+/**
+ * DTO for returning service data in API responses.
+ * <p>
+ * Contains information such as name, description, and type.
+ */
 @Builder
 public record ServiceResponseDTO(
         UUID id,

@@ -16,6 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the AttractionService interface.
+ * This class provides functionality for managing attractions, including retrieving, creating, updating, and deleting attractions.
+ */
 @Slf4j
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor
@@ -27,6 +31,9 @@ public class AttractionServiceImpl implements AttractionService {
     private final TicketInfoRepository ticketInfoRepository;
     private final ServiceRepository serviceRepository;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AttractionResponseDTO getAttractionById(UUID id) {
         log.debug("Find attraction by id: {}", id);
@@ -37,6 +44,9 @@ public class AttractionServiceImpl implements AttractionService {
         return attractionMapper.mapToAttractionResponseDTO(attraction);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<AttractionResponseDTO> getAllAttractions(int pageNumber, int pageSize, UUID id, String name, String description, AttractionType type) {
         log.debug("Find all attractions with filters");
@@ -48,6 +58,9 @@ public class AttractionServiceImpl implements AttractionService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public long getAttractionCount() {
@@ -55,6 +68,9 @@ public class AttractionServiceImpl implements AttractionService {
         return attractionRepository.count();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public AttractionResponseDTO createAttraction(AttractionRequestDTO attractionRequestDTO) {
@@ -91,6 +107,9 @@ public class AttractionServiceImpl implements AttractionService {
         return attractionMapper.mapToAttractionResponseDTO(attraction);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public AttractionResponseDTO updateAttraction(UUID id, AttractionRequestDTO attractionRequestDTO) {
@@ -135,12 +154,15 @@ public class AttractionServiceImpl implements AttractionService {
                 }
             }
 
-            attractionRepository.save(attraction);
-            return attractionMapper.mapToAttractionResponseDTO(attraction);
+            Attraction result = attractionRepository.save(attraction);
+            return attractionMapper.mapToAttractionResponseDTO(result);
         }
         throw new EntityNotFoundException("Attraction with id " + id + " not found");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void deleteAttraction(UUID id) {

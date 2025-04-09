@@ -10,18 +10,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Mapper component for converting between {@link Attraction} entities and their DTO representations.
+ * <p>
+ * Isolates the transformation logic between the API layer (DTOs) and the persistence layer (entities).
+ */
 @RequiredArgsConstructor
 @Component
 public class AttractionMapper {
 
-    public Attraction mapToAttraction(AttractionRequestDTO dto) {
+    /**
+     * Converts an {@link AttractionRequestDTO} to an {@link Attraction} entity.
+     *
+     * @param attractionRequestDTO the DTO containing attraction data from the client
+     * @return a new {@link Attraction} entity with values mapped from the DTO
+     */
+    public Attraction mapToAttraction(AttractionRequestDTO attractionRequestDTO) {
         Attraction attraction = new Attraction();
-        attraction.setName(dto.name());
-        attraction.setDescription(dto.description());
-        attraction.setType(dto.type());
+        attraction.setName(attractionRequestDTO.name());
+        attraction.setDescription(attractionRequestDTO.description());
+        attraction.setType(attractionRequestDTO.type());
         return attraction;
     }
 
+    /**
+     * Converts an {@link Attraction} entity to an {@link AttractionResponseDTO}.
+     * <p>
+     * Also formats nested fields like address and ticket info into human-readable strings.
+     *
+     * @param attraction the entity representing persisted attraction data
+     * @return a DTO with values mapped from the attraction entity
+     */
     public AttractionResponseDTO mapToAttractionResponseDTO(Attraction attraction) {
 
         String strAddress = (attraction.getAddress() != null) ?
@@ -51,4 +70,5 @@ public class AttractionMapper {
                 .services(serviceNames)
                 .build();
     }
+
 }

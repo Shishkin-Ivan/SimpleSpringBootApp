@@ -1,6 +1,7 @@
 package com.aston.intensive.simplespringbootapp.model;
 
 public enum AttractionType {
+
     ARCHAEOLOGICAL_SITE,
     LANDMARK,
     MUSEUM,
@@ -10,4 +11,5 @@ public enum AttractionType {
     CULTURAL,
     ENTERTAINMENT,
     GOVERNMENT
+
 }
