@@ -10,17 +10,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * REST controller implementation for managing services.
+ * Handles HTTP requests and delegates business logic to ServiceService.
+ */
 @RequestMapping("/api/service")
 @RestController
 @RequiredArgsConstructor
 public class ServiceControllerImpl implements ServiceController {
+
     private final ServiceService serviceService;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceResponseDTO getServiceById(@PathVariable UUID id) {
         return serviceService.getServiceById(id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ServiceResponseDTO> getAllServices(
             @RequestParam(defaultValue = "0") int pageNumber,
@@ -33,23 +44,36 @@ public class ServiceControllerImpl implements ServiceController {
         return serviceService.getAllServices(pageNumber, pageSize, id, name, description, type);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long getServiceCount() {
         return serviceService.getServiceCount();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceResponseDTO createService(@RequestBody ServiceRequestDTO serviceRequestDTO) {
         return serviceService.createService(serviceRequestDTO);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceResponseDTO updateService(@PathVariable UUID id, @RequestBody ServiceRequestDTO serviceRequestDTO) {
         return serviceService.updateService(id, serviceRequestDTO);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteService(@PathVariable UUID id) {
         serviceService.deleteService(id);
     }
+
 }

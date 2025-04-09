@@ -2,6 +2,12 @@ package com.aston.intensive.simplespringbootapp.dto;
 
 import lombok.Builder;
 
+/**
+ * DTO for providing address data in API requests.
+ * <p>
+ * Contains information such as building number, street, city, region,
+ * and geolocation coordinates (latitude and longitude).
+ */
 @Builder
 public record AddressRequestDTO(
         Integer building,

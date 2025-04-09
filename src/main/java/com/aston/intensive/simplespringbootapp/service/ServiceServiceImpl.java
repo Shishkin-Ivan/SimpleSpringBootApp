@@ -16,6 +16,10 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the ServiceService interface.
+ * This class provides functionality for managing services, including retrieving, creating, updating, and deleting services.
+ */
 @Slf4j
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor
@@ -24,6 +28,9 @@ public class ServiceServiceImpl implements ServiceService {
     private final ServiceRepository serviceRepository;
     private final ServiceMapper serviceMapper;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional(readOnly = true)
     public ServiceResponseDTO getServiceById(UUID id) {
@@ -35,6 +42,9 @@ public class ServiceServiceImpl implements ServiceService {
         return serviceMapper.mapToServiceResponseDTO(service);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ServiceResponseDTO> getAllServices(int pageNumber, int pageSize, UUID id, String name, String description, ServiceType type) {
         log.debug("Find all services with filters");
@@ -46,6 +56,9 @@ public class ServiceServiceImpl implements ServiceService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public long getServiceCount() {
@@ -53,6 +66,9 @@ public class ServiceServiceImpl implements ServiceService {
         return serviceRepository.count();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public ServiceResponseDTO createService(ServiceRequestDTO serviceRequestDTO) {
@@ -61,6 +77,9 @@ public class ServiceServiceImpl implements ServiceService {
         return serviceMapper.mapToServiceResponseDTO(service);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public ServiceResponseDTO updateService(UUID id, ServiceRequestDTO serviceRequestDTO) {
@@ -80,12 +99,15 @@ public class ServiceServiceImpl implements ServiceService {
             if(updatedService.getType() != null) {
                 service.setType(updatedService.getType());
             }
-            serviceRepository.save(service);
-            return serviceMapper.mapToServiceResponseDTO(service);
+            Service result = serviceRepository.save(service);
+            return serviceMapper.mapToServiceResponseDTO(result);
         }
         throw new EntityNotFoundException("Service with id " + id + " not found");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void deleteService(UUID id) {
