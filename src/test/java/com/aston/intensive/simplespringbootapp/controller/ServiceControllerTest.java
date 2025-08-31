@@ -1,9 +1,10 @@
 package com.aston.intensive.simplespringbootapp.controller;
 
-import com.aston.intensive.simplespringbootapp.dto.ServiceRequestDTO;
-import com.aston.intensive.simplespringbootapp.dto.ServiceResponseDTO;
+import com.aston.intensive.simplespringbootapp.service.controller.ServiceControllerImpl;
+import com.aston.intensive.simplespringbootapp.service.controller.dto.request.ServiceRequestDTO;
+import com.aston.intensive.simplespringbootapp.service.controller.dto.response.ServiceResponseDTO;
 import com.aston.intensive.simplespringbootapp.model.ServiceType;
-import com.aston.intensive.simplespringbootapp.service.ServiceService;
+import com.aston.intensive.simplespringbootapp.service.service.ServiceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,7 +1,11 @@
 package com.aston.intensive.simplespringbootapp.repository;
 
 import com.aston.intensive.simplespringbootapp.TestcontainersConfiguration;
+import com.aston.intensive.simplespringbootapp.address.repository.AddressRepository;
+import com.aston.intensive.simplespringbootapp.attraction.repository.AttractionRepository;
 import com.aston.intensive.simplespringbootapp.model.*;
+import com.aston.intensive.simplespringbootapp.service.repository.ServiceRepository;
+import com.aston.intensive.simplespringbootapp.ticket_info.repository.TicketInfoRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

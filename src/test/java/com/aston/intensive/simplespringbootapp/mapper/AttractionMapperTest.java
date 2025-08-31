@@ -1,7 +1,7 @@
 package com.aston.intensive.simplespringbootapp.mapper;
 
-import com.aston.intensive.simplespringbootapp.dto.AttractionRequestDTO;
-import com.aston.intensive.simplespringbootapp.dto.AttractionResponseDTO;
+import com.aston.intensive.simplespringbootapp.attraction.controller.dto.request.AttractionRequestDTO;
+import com.aston.intensive.simplespringbootapp.attraction.controller.dto.response.AttractionResponseDTO;
 import com.aston.intensive.simplespringbootapp.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

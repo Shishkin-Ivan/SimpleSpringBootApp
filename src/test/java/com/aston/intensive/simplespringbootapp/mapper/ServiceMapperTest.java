@@ -1,7 +1,7 @@
 package com.aston.intensive.simplespringbootapp.mapper;
 
-import com.aston.intensive.simplespringbootapp.dto.ServiceRequestDTO;
-import com.aston.intensive.simplespringbootapp.dto.ServiceResponseDTO;
+import com.aston.intensive.simplespringbootapp.service.controller.dto.request.ServiceRequestDTO;
+import com.aston.intensive.simplespringbootapp.service.controller.dto.response.ServiceResponseDTO;
 import com.aston.intensive.simplespringbootapp.model.Service;
 import com.aston.intensive.simplespringbootapp.model.ServiceType;
 import org.junit.jupiter.api.BeforeEach;

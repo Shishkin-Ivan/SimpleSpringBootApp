@@ -1,10 +1,11 @@
 package com.aston.intensive.simplespringbootapp.service;
 
-import com.aston.intensive.simplespringbootapp.dto.AddressRequestDTO;
-import com.aston.intensive.simplespringbootapp.dto.AddressResponseDTO;
+import com.aston.intensive.simplespringbootapp.address.service.impl.AddressServiceImpl;
+import com.aston.intensive.simplespringbootapp.address.controller.dto.request.AddressRequestDTO;
+import com.aston.intensive.simplespringbootapp.address.controller.dto.response.AddressResponseDTO;
 import com.aston.intensive.simplespringbootapp.mapper.AddressMapper;
 import com.aston.intensive.simplespringbootapp.model.Address;
-import com.aston.intensive.simplespringbootapp.repository.AddressRepository;
+import com.aston.intensive.simplespringbootapp.address.repository.AddressRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

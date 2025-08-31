@@ -1,8 +1,9 @@
 package com.aston.intensive.simplespringbootapp.controller;
 
-import com.aston.intensive.simplespringbootapp.dto.TicketInfoRequestDTO;
-import com.aston.intensive.simplespringbootapp.dto.TicketInfoResponseDTO;
-import com.aston.intensive.simplespringbootapp.service.TicketInfoService;
+import com.aston.intensive.simplespringbootapp.ticket_info.controller.TicketInfoControllerImpl;
+import com.aston.intensive.simplespringbootapp.ticket_info.controller.dto.request.TicketInfoRequestDTO;
+import com.aston.intensive.simplespringbootapp.ticket_info.controller.dto.response.TicketInfoResponseDTO;
+import com.aston.intensive.simplespringbootapp.ticket_info.service.TicketInfoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

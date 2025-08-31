@@ -1,10 +1,11 @@
 package com.aston.intensive.simplespringbootapp.service;
 
-import com.aston.intensive.simplespringbootapp.dto.TicketInfoRequestDTO;
-import com.aston.intensive.simplespringbootapp.dto.TicketInfoResponseDTO;
+import com.aston.intensive.simplespringbootapp.ticket_info.controller.dto.request.TicketInfoRequestDTO;
+import com.aston.intensive.simplespringbootapp.ticket_info.controller.dto.response.TicketInfoResponseDTO;
 import com.aston.intensive.simplespringbootapp.mapper.TicketInfoMapper;
 import com.aston.intensive.simplespringbootapp.model.TicketInfo;
-import com.aston.intensive.simplespringbootapp.repository.TicketInfoRepository;
+import com.aston.intensive.simplespringbootapp.ticket_info.repository.TicketInfoRepository;
+import com.aston.intensive.simplespringbootapp.ticket_info.service.impl.TicketInfoServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

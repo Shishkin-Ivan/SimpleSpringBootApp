@@ -1,7 +1,7 @@
 package com.aston.intensive.simplespringbootapp.mapper;
 
-import com.aston.intensive.simplespringbootapp.dto.AddressRequestDTO;
-import com.aston.intensive.simplespringbootapp.dto.AddressResponseDTO;
+import com.aston.intensive.simplespringbootapp.address.controller.dto.request.AddressRequestDTO;
+import com.aston.intensive.simplespringbootapp.address.controller.dto.response.AddressResponseDTO;
 import com.aston.intensive.simplespringbootapp.model.Address;
 import org.springframework.stereotype.Component;
 

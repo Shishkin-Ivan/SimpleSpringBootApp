@@ -1,10 +1,11 @@
 package com.aston.intensive.simplespringbootapp.service;
 
-import com.aston.intensive.simplespringbootapp.dto.AttractionRequestDTO;
-import com.aston.intensive.simplespringbootapp.dto.AttractionResponseDTO;
+import com.aston.intensive.simplespringbootapp.attraction.service.impl.AttractionServiceImpl;
+import com.aston.intensive.simplespringbootapp.attraction.controller.dto.request.AttractionRequestDTO;
+import com.aston.intensive.simplespringbootapp.attraction.controller.dto.response.AttractionResponseDTO;
 import com.aston.intensive.simplespringbootapp.mapper.AttractionMapper;
 import com.aston.intensive.simplespringbootapp.model.Attraction;
-import com.aston.intensive.simplespringbootapp.repository.AttractionRepository;
+import com.aston.intensive.simplespringbootapp.attraction.repository.AttractionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

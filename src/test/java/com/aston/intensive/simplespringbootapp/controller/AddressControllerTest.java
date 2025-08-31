@@ -1,8 +1,9 @@
 package com.aston.intensive.simplespringbootapp.controller;
 
-import com.aston.intensive.simplespringbootapp.dto.AddressRequestDTO;
-import com.aston.intensive.simplespringbootapp.dto.AddressResponseDTO;
-import com.aston.intensive.simplespringbootapp.service.AddressService;
+import com.aston.intensive.simplespringbootapp.address.controller.AddressControllerImpl;
+import com.aston.intensive.simplespringbootapp.address.controller.dto.request.AddressRequestDTO;
+import com.aston.intensive.simplespringbootapp.address.controller.dto.response.AddressResponseDTO;
+import com.aston.intensive.simplespringbootapp.address.service.AddressService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

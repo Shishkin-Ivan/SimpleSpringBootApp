@@ -1,7 +1,7 @@
 package com.aston.intensive.simplespringbootapp.mapper;
 
-import com.aston.intensive.simplespringbootapp.dto.TicketInfoRequestDTO;
-import com.aston.intensive.simplespringbootapp.dto.TicketInfoResponseDTO;
+import com.aston.intensive.simplespringbootapp.ticket_info.controller.dto.request.TicketInfoRequestDTO;
+import com.aston.intensive.simplespringbootapp.ticket_info.controller.dto.response.TicketInfoResponseDTO;
 import com.aston.intensive.simplespringbootapp.model.TicketInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
